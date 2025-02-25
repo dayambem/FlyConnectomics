@@ -18,13 +18,11 @@
 ## **📖 How It Works**  
 
 ### **1️⃣ Path Inefficiency Algorithm**  
-Path inefficiency quantifies how **efficiently signals travel between neurons**. It is calculated as:  
+Path inefficiency quantifies how **efficiently signals travel between neurons**. Path inefficiency is defined as:
 
-\[
-r_{ABD} = \frac{1}{w_{AB}} + \frac{1}{w_{BD}}
-\]
+r_ABD = r_AB + r_BD = (1 / w_AB) + (1 / w_BD)
 
-where \( w_{AB} \) and \( w_{BD} \) represent synaptic weights. The global inefficiency metric integrates all possible pathways for robust circuit mapping.  
+where w_AB and w_BD are synaptic weights. The global inefficiency metric integrates all possible pathways for robust circuit mapping.  
 
 ### **2️⃣ Neural Circuit Identification**  
 - **Extracts connectivity data** from [neuprint.janelia.org](https://neuprint.janelia.org).  
