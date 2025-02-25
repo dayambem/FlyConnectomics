@@ -74,17 +74,7 @@ efficiency_matrix <- computeInefficiency(downstream_neurons)
 plotNetworkGraph(efficiency_matrix)
 ```
 
----
 
-## **📎 Example Outputs**  
-
-### **Global Path Inefficiency Heatmap**  
-![Heatmap](image.png)  
-
-### **Neural Circuit Visualization**  
-![Network Graph](network_graph.png)  
-
----
 
 ## **🛠 Applications**  
 ✔ **Motor control & descending neuron analysis**  
