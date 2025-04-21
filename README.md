@@ -38,21 +38,34 @@ This favors short, high-weight, and parallel routes—aligning with biological s
 ---
 
 ## Example Usage
-
 ```r
-# Load dependencies and authenticate
+# Load dependencies
 library(neuprintr)
-neuprint_login(server="https://neuprint.janelia.org", token="your_token")
+library(natverse)
+library(visNetwork)
 source("path_conductance_functions.R")
 
-# Get downstream neurons
-downstream <- getDownstreamsNR(ids = c(123456), nLayers = 2, connStrength = 5)
+# Authenticate with neuPrint
+conn = neuprint_login(server= "https://neuprint.janelia.org",
+                      token= "your_token_here")
 
-# Compute path conductance matrix
-cond_matrix <- computeConductance(downstream)
+neuprint_connection(
+  server = "https://neuprint.janelia.org",
+  token = token,
+  dataset = 'manc:v1.0',
+  conn = conn,
+  config = httr::config()
+)
 
-# Visualize network
-plotNetworkGraph(cond_matrix)
+# Retrieve downstream neurons
+downstream_neurons <- getDownstreamsNR(ids = c(123456), nLayers = 2, connStrength = 5)
+
+# Compute paths using path conductance
+paths <- pathsByEffic(inputIds = c(123456), outputIds = downstream_neurons$partner, pL = 2)
+
+# Visualize output using visNetwork or plot heatmaps
+# Custom plotting/visualization based on effDF matrix or adjacency structure
+
 
 
 
