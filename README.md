@@ -1,95 +1,59 @@
-# FlyConnectomics
-### **FlyConnectomics: Mapping Drosophila Neural Circuits with Network Science** 🧠🔬  
+# Path Conductance
 
-**FlyConnectomics** is an R-based computational toolkit designed to **analyze, predict, and visualize neural connectivity in Drosophila**. By leveraging **neuprintR, natverse, and graph theory**, this repository enables researchers to explore how **neural circuits drive complex behaviors** such as motor control, aggression, and flight.  
+### Computational Connectomics Toolkit for Drosophila Neural Pathway Analysis
 
----
-
-## **📌 Features**  
-
-✅ **Automated Neural Circuit Discovery** – Identify downstream neuron targets across multiple synaptic layers.  
-✅ **Path Inefficiency Analysis** – Quantify neural connectivity using a custom network science approach.  
-✅ **Graph-Based Visualization** – Generate interactive **hierarchical connectivity maps** with **visNetwork**.  
-✅ **Heatmap-Based Connectivity Strength** – Apply **pheatmap** to analyze synaptic weight distributions.  
-✅ **Flexible Neuron Filtering** – Select neurons based on ROI, neurotransmitter type, or connectivity thresholds.  
+**PathConductance** is an R-based toolkit for identifying and ranking signal pathways in *Drosophila melanogaster* connectomic datasets. It integrates `neuprintr`, `natverse`, and custom graph algorithms to evaluate synaptic connectivity strength using a biologically-informed adaptation of Dijkstra’s algorithm.
 
 ---
 
-## **📖 How It Works**  
+## Features
 
-### **1️⃣ Path Inefficiency Algorithm**  
-Path inefficiency quantifies how **efficiently signals travel between neurons**. Path inefficiency is defined as:
-
-r_ABD = r_AB + r_BD = (1 / w_AB) + (1 / w_BD)
-
-where w_AB and w_BD are synaptic weights. The global inefficiency metric integrates all possible pathways for robust circuit mapping.  
-
-### **2️⃣ Neural Circuit Identification**  
-- **Extracts connectivity data** from [neuprint.janelia.org](https://neuprint.janelia.org).  
-- **Applies shortest path algorithms** to predict functional neuron connections.  
-- **Identifies strong downstream targets** of motor and descending neurons (DNs).  
-
-### **3️⃣ Visualization & Analysis**  
-- **Hierarchical graphs** depict neuron-to-motor pathways.  
-- **Heatmaps** display synaptic strengths and connectivity inefficiencies.  
-- **Graph-theoretic clustering** reveals key functional modules.  
+- **Automated Neural Circuit Discovery** – Identify downstream neuron targets across multiple synaptic layers.
+- **Path Conductance Metric** – Quantify connectivity using series and parallel synaptic resistance models.
+- **Graph-Based Visualization** – Generate interactive hierarchical connectivity maps with `visNetwork`.
+- **Heatmap-Based Connectivity Strength** – Visualize synaptic weight distributions with `pheatmap`.
+- **Flexible Neuron Filtering** – Select neurons based on ROI, neurotransmitter type, or connection strength.
 
 ---
 
-## **🚀 Installation**  
-Ensure you have **R (4.0+), RStudio, and the following packages installed:**  
+## How It Works
+
+### Path Conductance Algorithm
+
+Path conductance quantifies how efficiently signals propagate through neural circuits. Synaptic weights are treated as conductances (i.e., inverses of resistance). For a path A → B → D:
+
+r_ABD = (1 / w_AB) + (1 / w_BD)
+
+where `w_AB` and `w_BD` are synaptic weights. Local conductance is:
+
+g_ABD_local = 1 / r_ABD
+
+To compute global conductance over multiple parallel paths:
+
+g_global = g_P1 + g_P2 + ... + g_Pn
+
+
+This favors short, high-weight, and parallel routes—aligning with biological signal efficiency.
+
+---
+
+## Example Usage
 
 ```r
-install.packages(c("neuprintr", "natverse", "igraph", "visNetwork", "pheatmap", "dplyr", "R.matlab"))
-```
-Clone the repository:  
-```sh
-git clone https://github.com/yourusername/FlyConnectomics.git
-```
-
----
-
-## **📊 Example Usage**  
-
-### **Load Dependencies & Authenticate with NeuPrint**  
-```r
-library(natverse)
+# Load dependencies and authenticate
 library(neuprintr)
 neuprint_login(server="https://neuprint.janelia.org", token="your_token")
-```
+source("path_conductance_functions.R")
 
-### **Retrieve & Analyze Neuronal Connections**  
-```r
-source("connectomics_functions.R")
+# Get downstream neurons
+downstream <- getDownstreamsNR(ids = c(123456), nLayers = 2, connStrength = 5)
 
-# Get downstream neurons for a given input
-downstream_neurons <- getDownstreamsNR(ids=c(123456), nLayers=2, connStrength=5)
+# Compute path conductance matrix
+cond_matrix <- computeConductance(downstream)
 
-# Compute path inefficiency for connections
-efficiency_matrix <- computeInefficiency(downstream_neurons)
-```
-
-### **Visualize Neural Networks**  
-```r
-plotNetworkGraph(efficiency_matrix)
-```
+# Visualize network
+plotNetworkGraph(cond_matrix)
 
 
 
-## **🛠 Applications**  
-✔ **Motor control & descending neuron analysis**  
-✔ **Behavioral neuroscience (aggression, flight, learning circuits)**  
-✔ **Graph-based connectomics modeling**  
-✔ **Comparison with AI-driven neuroscience models**  
 
----
-
-## **🤝 Contributing**  
-We welcome **collaborations, issues, and pull requests**! Feel free to fork the repo and enhance the toolkit.  
-
----
-
-## **📧 Contact**  
-For questions, reach out via **[your email]** or visit [your website/linkedin].  
-
-🚀 *Unlock the power of neural networks—one synapse at a time!*
